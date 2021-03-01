@@ -1,5 +1,5 @@
 // Package event contains the struct used to pass events between parsers and
-// the libclick module.
+// the libtb module.
 package event
 
 import "time"

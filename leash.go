@@ -17,9 +17,11 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/honeycombio/dynsampler-go"
-	"github.com/Altinity/libclick-go"
 	"github.com/honeycombio/urlshaper"
+	"github.com/ygnuss/libtb-go"
 
+	"github.com/Altinity/clicktail/parsers/mysql"
+	"github.com/Altinity/clicktail/parsers/mysqlaudit"
 	"github.com/honeycombio/honeytail/event"
 	"github.com/honeycombio/honeytail/parsers"
 	"github.com/honeycombio/honeytail/parsers/arangodb"
@@ -30,8 +32,6 @@ import (
 	"github.com/honeycombio/honeytail/parsers/postgresql"
 	"github.com/honeycombio/honeytail/parsers/regex"
 	"github.com/honeycombio/honeytail/tail"
-	"github.com/Altinity/clicktail/parsers/mysql"
-    "github.com/Altinity/clicktail/parsers/mysqlaudit"
 )
 
 // actually go and be leashy
@@ -45,7 +45,7 @@ func run(options GlobalOptions) {
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
 	// spin up our transmission to send events to ClickHouse
-	libhConfig := libclick.Config{
+	libhConfig := libtb.Config{
 		//WriteKey:             options.Reqs.WriteKey,
 		Dataset:              options.Reqs.Dataset,
 		APIHost:              options.APIHost,
@@ -59,11 +59,11 @@ func run(options GlobalOptions) {
 		// to re-enqueue all dropped events
 		BlockOnResponse: true,
 
-		// limit pending work capacity so that we get backpressure from libclick
-		// and block instead of sleeping inside sendToLibClick.
+		// limit pending work capacity so that we get backpressure from libtb
+		// and block instead of sleeping inside sendTolibtb.
 		PendingWorkCapacity: 20 * options.NumSenders,
 	}
-	if err := libclick.Init(libhConfig); err != nil {
+	if err := libtb.Init(libhConfig); err != nil {
 		logrus.WithFields(logrus.Fields{"err": err}).Fatal(
 			"Error occured while spinning up Transimission")
 	}
@@ -128,7 +128,7 @@ func run(options GlobalOptions) {
 				"Error initializing %s parser module: %v", options.Reqs.ParserName, err)
 		}
 
-		// create a channel for sending events into libclick
+		// create a channel for sending events into libtb
 		toBeSent := make(chan event.Event, options.NumSenders)
 		doneSending := make(chan bool)
 
@@ -158,11 +158,11 @@ func run(options GlobalOptions) {
 		}()
 
 		// start up the sender. all sources are either sampled when tailing or in-
-		// parser, so always tell libclick events are pre-sampled
+		// parser, so always tell libtb events are pre-sampled
 		go sendToLibhoney(ctx, realToBeSent, toBeResent, delaySending, doneSending)
 
 		// start a goroutine that reads from responses and logs.
-		responses := libclick.Responses()
+		responses := libtb.Responses()
 		responsesWG.Add(1)
 		go func() {
 			handleResponses(responses, stats, toBeResent, delaySending, options)
@@ -175,14 +175,14 @@ func run(options GlobalOptions) {
 			parser.ProcessLines(plines, toBeSent, prefixRegex)
 			// trigger the sending goroutine to finish up
 			close(toBeSent)
-			// wait for all the events in toBeSent to be handed to libclick
+			// wait for all the events in toBeSent to be handed to libtb
 			<-doneSending
 			parsersWG.Done()
 		}(lines)
 	}
 	parsersWG.Wait()
-	// tell libclick to finish up sending events
-	libclick.Close()
+	// tell libtb to finish up sending events
+	libtb.Close()
 	// print out what we've done one last time
 	responsesWG.Wait()
 	stats.log()
@@ -225,9 +225,9 @@ func getParserAndOptions(options GlobalOptions) (parsers.Parser, interface{}) {
 		opts = &options.MySQL
 		opts.(*mysql.Options).NumParsers = int(options.NumSenders)
 	case "mysqlaudit":
-        parser = &mysqlaudit.Parser{}
-        opts = &options.MySQLAudit
-        opts.(*mysqlaudit.Options).NumParsers = int(options.NumSenders)
+		parser = &mysqlaudit.Parser{}
+		opts = &options.MySQLAudit
+		opts.(*mysqlaudit.Options).NumParsers = int(options.NumSenders)
 	case "postgresql":
 		opts = &options.PostgreSQL
 		parser = &postgresql.Parser{}
@@ -427,7 +427,7 @@ func whitelistKey(whiteKeys []string, key string) bool {
 }
 
 // sendToLibhoney reads from the toBeSent channel and shoves the events into
-// libclick events, sending them on their way.
+// libtb events, sending them on their way.
 func sendToLibhoney(ctx context.Context, toBeSent chan event.Event, toBeResent chan event.Event,
 	delaySending chan int, doneSending chan bool) {
 	for {
@@ -464,7 +464,7 @@ func sendToLibhoney(ctx context.Context, toBeSent chan event.Event, toBeResent c
 	}
 }
 
-// sendEvent does the actual handoff to libclick
+// sendEvent does the actual handoff to libtb
 func sendEvent(ev event.Event) {
 	if ev.SampleRate == -1 {
 		// drop the event!
@@ -473,7 +473,7 @@ func sendEvent(ev event.Event) {
 		}).Debug("droppped event due to sampling")
 		return
 	}
-	libhEv := libclick.NewEvent()
+	libhEv := libtb.NewEvent()
 	libhEv.Metadata = ev
 	libhEv.Timestamp = ev.Timestamp
 	libhEv.SampleRate = uint(ev.SampleRate)
@@ -481,19 +481,19 @@ func sendEvent(ev event.Event) {
 		logrus.WithFields(logrus.Fields{
 			"event": ev,
 			"error": err,
-		}).Error("Unexpected error adding data to libclick event")
+		}).Error("Unexpected error adding data to libtb event")
 	}
 	if err := libhEv.SendPresampled(); err != nil {
 		logrus.WithFields(logrus.Fields{
 			"event": ev,
 			"error": err,
-		}).Error("Unexpected error event to libclick send")
+		}).Error("Unexpected error event to libtb send")
 	}
 }
 
 // handleResponses reads from the response queue, logging a summary and debug
 // re-enqueues any events that failed to send in a retryable way
-func handleResponses(responses chan libclick.Response, stats *responseStats,
+func handleResponses(responses chan libtb.Response, stats *responseStats,
 	toBeResent chan event.Event, delaySending chan int,
 	options GlobalOptions) {
 	go logStats(stats, options.StatusInterval)

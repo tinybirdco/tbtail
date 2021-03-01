@@ -7,11 +7,11 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	"github.com/honeycombio/honeytail/event"
-	"github.com/Altinity/libclick-go"
+	"github.com/ygnuss/libtb-go"
 )
 
 // responseStats is a container for collecting statistics about events sent
-// via libclick. It counts interesting aspects of the events it gets and
+// via libtb. It counts interesting aspects of the events it gets and
 // presents them for printing whenever it's called.
 //
 // the intent is to periodically print and flush the counters, eg once/minute
@@ -42,7 +42,7 @@ func newResponseStats() *responseStats {
 }
 
 // update adds a response into the stats container
-func (r *responseStats) update(rsp libclick.Response) {
+func (r *responseStats) update(rsp libtb.Response) {
 	r.lock.Lock()
 	defer r.lock.Unlock()
 	r.count += 1

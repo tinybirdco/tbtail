@@ -10,9 +10,11 @@ import (
 	"time"
 
 	"github.com/Sirupsen/logrus"
-	"github.com/Altinity/libclick-go"
 	flag "github.com/jessevdk/go-flags"
+	"github.com/ygnuss/libtb-go"
 
+	"github.com/Altinity/clicktail/parsers/mysql"
+	"github.com/Altinity/clicktail/parsers/mysqlaudit"
 	"github.com/honeycombio/honeytail/httime"
 	"github.com/honeycombio/honeytail/parsers/arangodb"
 	"github.com/honeycombio/honeytail/parsers/htjson"
@@ -22,8 +24,6 @@ import (
 	"github.com/honeycombio/honeytail/parsers/postgresql"
 	"github.com/honeycombio/honeytail/parsers/regex"
 	"github.com/honeycombio/honeytail/tail"
-	"github.com/Altinity/clicktail/parsers/mysql"
-	"github.com/Altinity/clicktail/parsers/mysqlaudit"
 )
 
 // BuildID is set by Travis CI
@@ -46,7 +46,7 @@ var validParsers = []string{
 
 // GlobalOptions has all the top level CLI flags that clicktail supports
 type GlobalOptions struct {
-	APIHost    string `long:"api_host" description:"Host of the ClickHouse server" default:"http://localhost:8123/"`
+	APIHost    string `long:"api_host" description:"Host of the ClickHouse server" default:"http://localhost:8001/"`
 	TailSample bool   `hidden:"true" description:"When true, sample while tailing. When false, sample post-parser events"`
 
 	ConfigFile string `short:"c" long:"config" description:"Config file for clicktail in INI format." no-ini:"true"`
@@ -93,10 +93,10 @@ type GlobalOptions struct {
 }
 
 type RequiredOptions struct {
-	ParserName string   `short:"p" long:"parser" description:"Parser module to use. Use --list to list available options."`
+	ParserName string `short:"p" long:"parser" description:"Parser module to use. Use --list to list available options."`
 	//WriteKey   string   `short:"k" long:"writekey" description:"Team write key"`
-	LogFiles   []string `short:"f" long:"file" description:"Log file(s) to parse. Use '-' for STDIN, use this flag multiple times to tail multiple files, or use a glob (/path/to/foo-*.log)"`
-	Dataset    string   `short:"d" long:"dataset" description:"Name of the dataset"`
+	LogFiles []string `short:"f" long:"file" description:"Log file(s) to parse. Use '-' for STDIN, use this flag multiple times to tail multiple files, or use a glob (/path/to/foo-*.log)"`
+	Dataset  string   `short:"d" long:"dataset" description:"Name of the dataset"`
 }
 
 type OtherModes struct {
@@ -170,18 +170,17 @@ func main() {
 	addParserDefaultOptions(&options)
 	sanityCheckOptions(&options)
 
-    if err := libclick.VerifyApiHost(libclick.Config{
-		APIHost:  options.APIHost,
+	if err := libtb.VerifyApiHost(libtb.Config{
+		APIHost: options.APIHost,
 	}); err != nil {
 		fmt.Fprintln(os.Stderr, "Could not connect to ClickHouse server: ", err)
 		os.Exit(1)
 	}
 
-
 	run(options)
 }
 
-// setVersion sets the internal version ID and updates libclick's user-agent
+// setVersion sets the internal version ID and updates libtb's user-agent
 func setVersionUserAgent(backfill bool, parserName string) {
 	if BuildID == "" {
 		version = "dev"
@@ -191,7 +190,7 @@ func setVersionUserAgent(backfill bool, parserName string) {
 	if backfill {
 		parserName += " backfill"
 	}
-	libclick.UserAgentAddition = fmt.Sprintf("clicktail/%s (%s)", version, parserName)
+	libtb.UserAgentAddition = fmt.Sprintf("clicktail/%s (%s)", version, parserName)
 }
 
 // handleOtherModes takse care of all flags that say we should just do something
@@ -257,9 +256,9 @@ func sanityCheckOptions(options *GlobalOptions) {
 		usage()
 		os.Exit(1)
 	/*case options.Reqs.WriteKey == "" || options.Reqs.WriteKey == "NULL":
-		fmt.Println("Write key required to be specified with the --writekey flag.")
-		usage()
-		os.Exit(1)*/
+	fmt.Println("Write key required to be specified with the --writekey flag.")
+	usage()
+	os.Exit(1)*/
 	case len(options.Reqs.LogFiles) == 0:
 		fmt.Println("Log file name or '-' required to be specified with the --file flag.")
 		usage()
