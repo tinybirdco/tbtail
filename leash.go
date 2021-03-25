@@ -46,7 +46,7 @@ func run(options GlobalOptions) {
 
 	// spin up our transmission to send events to ClickHouse
 	libhConfig := libtb.Config{
-		//WriteKey:             options.Reqs.WriteKey,
+		WriteKey:             options.Reqs.WriteKey,
 		Dataset:              options.Reqs.Dataset,
 		APIHost:              options.APIHost,
 		MaxConcurrentBatches: options.NumSenders,

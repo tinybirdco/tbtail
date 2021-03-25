@@ -93,10 +93,10 @@ type GlobalOptions struct {
 }
 
 type RequiredOptions struct {
-	ParserName string `short:"p" long:"parser" description:"Parser module to use. Use --list to list available options."`
-	//WriteKey   string   `short:"k" long:"writekey" description:"Team write key"`
-	LogFiles []string `short:"f" long:"file" description:"Log file(s) to parse. Use '-' for STDIN, use this flag multiple times to tail multiple files, or use a glob (/path/to/foo-*.log)"`
-	Dataset  string   `short:"d" long:"dataset" description:"Name of the dataset"`
+	ParserName string   `short:"p" long:"parser" description:"Parser module to use. Use --list to list available options."`
+	WriteKey   string   `short:"k" long:"writekey" description:"The token for uploading data to Tinybird dataset"`
+	LogFiles   []string `short:"f" long:"file" description:"Log file(s) to parse. Use '-' for STDIN, use this flag multiple times to tail multiple files, or use a glob (/path/to/foo-*.log)"`
+	Dataset    string   `short:"d" long:"dataset" description:"Name of the dataset"`
 }
 
 type OtherModes struct {
@@ -171,7 +171,8 @@ func main() {
 	sanityCheckOptions(&options)
 
 	if err := libtb.VerifyApiHost(libtb.Config{
-		APIHost: options.APIHost,
+		APIHost:  options.APIHost,
+		WriteKey: options.Reqs.WriteKey,
 	}); err != nil {
 		fmt.Fprintln(os.Stderr, "Could not connect to ClickHouse server: ", err)
 		os.Exit(1)
@@ -255,10 +256,10 @@ func sanityCheckOptions(options *GlobalOptions) {
 		fmt.Println("Parser required to be specified with the --parser flag.")
 		usage()
 		os.Exit(1)
-	/*case options.Reqs.WriteKey == "" || options.Reqs.WriteKey == "NULL":
-	fmt.Println("Write key required to be specified with the --writekey flag.")
-	usage()
-	os.Exit(1)*/
+	case options.Reqs.WriteKey == "" || options.Reqs.WriteKey == "NULL":
+		fmt.Println("Write key required to be specified with the --writekey flag.")
+		usage()
+		os.Exit(1)
 	case len(options.Reqs.LogFiles) == 0:
 		fmt.Println("Log file name or '-' required to be specified with the --file flag.")
 		usage()
