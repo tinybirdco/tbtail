@@ -190,14 +190,14 @@ func setVersionUserAgent(backfill bool, parserName string) {
 	if backfill {
 		parserName += " backfill"
 	}
-	libtb.UserAgentAddition = fmt.Sprintf("clicktail/%s (%s)", version, parserName)
+	libtb.UserAgentAddition = fmt.Sprintf("tbtail/%s (%s)", version, parserName)
 }
 
 // handleOtherModes takse care of all flags that say we should just do something
 // and exit rather than actually parsing logs
 func handleOtherModes(fp *flag.Parser, modes OtherModes) {
 	if modes.Version {
-		fmt.Println("Clicktail version", version)
+		fmt.Println("Tbtail version", version)
 		os.Exit(0)
 	}
 	if modes.Help {
@@ -319,9 +319,9 @@ func sanityCheckOptions(options *GlobalOptions) {
 
 func usage() {
 	fmt.Print(`
-Usage: clicktail -p <parser> -f </path/to/logfile> -d <mydata> [optional arguments]
+Usage: tbtail -p <parser> -f </path/to/logfile> -d <mydata> [optional arguments]
 
 For even more detail on required and optional parameters, run
-clicktail --help
+tbtail --help
 `)
 }

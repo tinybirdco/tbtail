@@ -36,7 +36,7 @@ import (
 
 // actually go and be leashy
 func run(options GlobalOptions) {
-	logrus.Info("Starting clicktail")
+	logrus.Info("Starting tbtail")
 
 	stats := newResponseStats()
 
@@ -189,7 +189,7 @@ func run(options GlobalOptions) {
 	stats.logFinal()
 
 	// Nothing bad happened, yay
-	logrus.Info("Clicktail is all done, goodbye!")
+	logrus.Info("Tbtail is all done, goodbye!")
 }
 
 // getParserOptions takes a parser name and the global options struct
