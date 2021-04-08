@@ -1,5 +1,0 @@
-
-SCHEMA >
-    `data` String
-
-ENGINE "MergeTree"

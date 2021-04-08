@@ -1,0 +1,21 @@
+
+NODE materialize
+SQL >
+
+    SELECT
+        timestamp,
+        JSONExtractInt(data,'body_bytes_sent') as body_bytes_sent,
+        JSONExtractString(data,'http_user_agent') as http_user_agent,
+        JSONExtractString(data,'remote_addr') as remote_addr,
+        JSONExtractString(data,'request') as request,
+        JSONExtractString(data,'request_method') as request_method,
+        JSONExtractString(data,'request_path') as request_path,
+        JSONExtractString(data,'request_pathshape') as request_pathshape,
+        JSONExtractString(data,'request_protocol_version') as request_protocol_version,
+        JSONExtractString(data,'request_shape') as request_shape,
+        JSONExtractString(data,'request_uri') as request_uri,
+        JSONExtractInt(data,'status') as status
+    FROM nginx_raw
+        
+TYPE materialized
+DATASOURCE nginx_rec
