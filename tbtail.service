@@ -1,0 +1,17 @@
+[Unit]
+Description=Tinybird log tailer tbtail by Tinybird
+After=network.target
+
+[Service]
+ExecStart=/home/deploy/logs-tbtail/tbtail -c /home/deploy/logs-tbtail/tbtail.conf
+KillMode=process
+Restart=always
+RestartSec=5s
+TimeoutStartSec=10s
+TimeoutStopSec=10s
+User=deploy
+Group=deploy
+PermissionsStartOnly=true
+
+[Install]
+Alias=tbtail tbtail.service
