@@ -4,3 +4,4 @@ honeytail
 *.tar.gz
 bin
 schema/tinybird/.tinyb*
+pkg-test/tbtail*

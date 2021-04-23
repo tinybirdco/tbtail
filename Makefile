@@ -26,14 +26,17 @@ build-all: build-deps build
 
 install-all: build-deps install
 
-package: 
-	$(shell ./build-pkg.sh -v "${BUILD_NUMBER}" -t deb)
-	$(shell pkg-test/test.sh "${BUILD_NUMBER}")
-
 cross-build-old:
 	export CGO_LDFLAGS="-Xlinker -rpath=/path/to/another_glibc/lib64"
 	CGO_LDFLAGS="$(CGO_LDFLAGS) -Xlinker --dynamic-linker="/path/to/another_glibc/lib64/ld-linux-x86-64.so.2"
 	build-all
+
+build-package:
+	$(bash ./build-pkg.sh -v "${BUILD_NUMBER}" -t deb)
+	$(bash ./pkg-test/test.sh "${BUILD_NUMBER}")
+	
+
+package: clean install build-package
 
 run:
 	go run main.go

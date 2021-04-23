@@ -24,13 +24,10 @@ There are three installation options for `tbtail`:
 + From source code
 + From downloaded package
 
-#### Install from source code
+### Install from source code
 
 1. Clone the [`tbtail`](https://github.com/ygnuss/tbtail) and [`libtb-go`](https://github.com/ygnuss/libtb-go) repo. 
 2. Compile both using `go build`, `go install` or create your own makefile.
-
-
-#### Install from source
 
 First of all, remember you  should set your GOPATH var pointing to your go project folder.
 
@@ -43,7 +40,7 @@ GOPATH=<go-project-folder> go build
 GOPATH=<go-project-folder> go install
 ```
 
-the binary will be installed into your bin folder `$GOPATH/bin/tbtail`
+The binary will be installed into your bin folder `$GOPATH/bin/tbtail`
 
 If you need to change anything highly probably you will need our `tblib-go` tool too.
 
@@ -55,6 +52,22 @@ go get https://github.com/ygnuss/libtb-go
 GOPATH=<go-project-folder> go build
 GOPATH=<go-project-folder> go install
 ```
+
+You can also use our [`Makefile`](./Makefile) to build, clean, install and packaging the code.
+
+- Use `make clean` to clean the project
+- Use `make build` to build `tbtail`
+- Use `make build-all` to build `tbtail` and `lib-tb`
+- Use `make install` to install `tbtail`
+- Use `make package` to build the .deb package
+
+Remember that, in all cases, you need `GOPATH` point to your root workspace.
+
+### Install from package
+
+<TBC>
+
+
 
 ## Usage
 
@@ -69,3 +82,5 @@ Once datasource is prepared you can run binary as follows:
 ```sh
 tbtail --dataset nginx_1 --parser nginx --file /var/log/nginx/access.log --nginx.conf /etc/nginx/nginx.conf --nginx.format combined --writekey p.eyJ1IjogIjMzNjU3ODViLTRlNTYtNDY3MS1iMGUzLThjNjUzOTJiODhlYSIsICJpZCI6ICJiOTMwZjMyMi00MGYyLTQ5MDYtYWYxYi1jMjNiMWE2MmJkNWUifQ.AjCuIPMjMzzp_zprh_8ha2ALe4CMjOBOQOGyQALde-M
 ```
+
+You can also run the binary using a config file like [tbtail.conf](./tbtail.conf). This file contains a description for each available option.
