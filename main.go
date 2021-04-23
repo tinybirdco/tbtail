@@ -174,7 +174,7 @@ func main() {
 		APIHost:  options.APIHost,
 		WriteKey: options.Reqs.WriteKey,
 	}); err != nil {
-		fmt.Fprintln(os.Stderr, "Could not connect to ClickHouse server: ", err)
+		fmt.Fprintln(os.Stderr, "Could not connect to Tinybird server: ", err)
 		os.Exit(1)
 	}
 
@@ -320,7 +320,7 @@ func sanityCheckOptions(options *GlobalOptions) {
 
 func usage() {
 	fmt.Print(`
-Usage: tbtail -p <parser> -f </path/to/logfile> -d <mydata> [optional arguments]
+Usage: tbtail -p <parser> -f </path/to/logfile> -d <datasource> -k <tb_token> [optional arguments]
 
 For even more detail on required and optional parameters, run
 tbtail --help

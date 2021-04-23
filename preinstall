@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-USER="altinity"
-GROUP="altinity"
+USER="deploy"
+GROUP="deploy"
 
 # Create service group and user if they doesn't already exist
 if ! getent group $GROUP >/dev/null
@@ -24,4 +24,4 @@ then
           $USER >/dev/null
 fi
 
-usermod -a -G adm altinity
+usermod -a -G adm deploy
