@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Build deb or rpm packages for clicktail.
+# Build deb or rpm packages for tbtail.
 set -e
 
 function usage() {
@@ -23,13 +23,13 @@ if [ -z "$version" ] || [ -z "$pkg_type" ]; then
     usage
 fi
 
-fpm -s dir -n clicktail \
-    -m "Support <support@altinity.com>" \
+fpm -s dir -n tbtail \
+    -m "Support <support@tinybird.co>" \
     -p $GOPATH/bin \
     -v $version \
     -t $pkg_type \
     --pre-install=./preinstall \
-    $GOPATH/bin/clicktail=/usr/bin/clicktail \
-    ./clicktail.upstart=/etc/init/clicktail.conf \
-    ./clicktail.service=/lib/systemd/system/clicktail.service \
-    ./clicktail.conf=/etc/clicktail/clicktail-example.conf
+    $GOPATH/bin/tbtail=/usr/local/bin/tbtail \
+    ./tbtail.upstart=/etc/init/tbtail.conf \
+    ./tbtail.service=/lib/systemd/system/tbtail.service \
+    ./tbtail.conf=/etc/tbtail/tbtail.conf

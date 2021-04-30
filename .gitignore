@@ -3,3 +3,5 @@ honeytail
 .DS_Store
 *.tar.gz
 bin
+schema/tinybird/.tinyb*
+pkg-test/tbtail*
