@@ -8,7 +8,7 @@ This version has been tested with Nginx logs.
 
 ### Downloads
 
-* [deb package]((https://storage.googleapis.com/tbtail-releases/tbtail_1.0.0_amd64.deb))
+* [deb package](https://storage.googleapis.com/tbtail-releases/tbtail_1.0.0_amd64.deb)
 
 * [binary file](https://storage.googleapis.com/tbtail-releases/tbtail_1.0.0_amd64)
 
