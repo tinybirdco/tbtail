@@ -1,7 +1,5 @@
 
 SCHEMA >
-    `data` String,
-    `timestamp` DateTime MATERIALIZED parseDateTimeBestEffort(JSONExtractString(data, '_time'))
+    `data` String
 
-ENGINE "MergeTree"
-ENGINE_TTL "toDate(timestamp) + INTERVAL 3 DAY"
+ENGINE "Null"

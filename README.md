@@ -27,13 +27,13 @@ There are three installation options for `tbtail`:
 
 ### Install from source code
 
-1. Clone the [`tbtail`](https://github.com/ygnuss/tbtail) and [`libtb-go`](https://github.com/ygnuss/libtb-go) repo. 
+1. Clone the [`tbtail`](https://github.com/tinybirdco/tbtail) and [`libtb-go`](https://github.com/tinybirdco/libtb-go) repo. 
 2. Compile both using `go build`, `go install`, or create your makefile.
 
 First of all, remember you should set your GOPATH var pointing to your go project folder.
 
 ```
-go get https://github.com/ygnuss/tbtail
+go get https://github.com/tinybirdco/tbtail
 ```
 
 ```
@@ -46,7 +46,7 @@ The binary will be installed into your bin folder `$GOPATH/bin/tbtail`
 If you need to change anything highly probably you will need our `tblib-go` tool too.
 
 ```
-go get https://github.com/ygnuss/libtb-go
+go get https://github.com/tinybirdco/libtb-go
 ```
 
 ```
@@ -92,7 +92,7 @@ You can place the binary file where you want and run it using the command line o
 Make sure you have created the data source in Tinybird. You can use the `nginx_1.datasource` file: 
 
 ```sh
-tb push datasource nginx_1.datasource
+tb push datasource schema/tinybird/nginx_raw.datasource
 ```
 
 Once datasource is prepared you can run binary as follows:
