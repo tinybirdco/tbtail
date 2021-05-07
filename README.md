@@ -89,16 +89,21 @@ You can place the binary file where you want and run it using the command line o
 
 ## Usage
 
-Make sure you have created the data source in Tinybird. You can use the `nginx_1.datasource` file: 
+Make sure you have created the data source in Tinybird that logs will be appended to. You can use the `nginx_raw.datasource` file: 
 
 ```sh
 tb push datasource schema/tinybird/nginx_raw.datasource
+tb push datasource schema/tinybird/nginx_log.datasource
+tb push datasource schema/tinybird/nginx_mv.pipe
 ```
 
-Once datasource is prepared you can run binary as follows:
+For a complete data project that will store the logs and materialize it with several granularity levels, you can check out [this project](https://github.com/tinybirdco/nginx-logs-analytics).
+
+Once the Data Source is prepared to receive logs, you can run the binary as follows:
 
 ```sh
-tbtail --dataset nginx_1 --parser nginx --file /var/log/nginx/access.log --nginx.conf /etc/nginx/nginx.conf --nginx.format combined --writekey p.eyJ1IjogIjMzNjU3ODViLTRlNTYtNDY3MS1iMGUzLThjNjUzOTJiODhlYSIsICJpZCI6ICJiOTMwZjMyMi00MGYyLTQ5MDYtYWYxYi1jMjNiMWE2MmJkNWUifQ.AjCuIPMjMzzp_zprh_8ha2ALe4CMjOBOQOGyQALde-M
+TB_WRITE_API_KEY=p.ey.. # token with either DATASOURCES:APPEND:nginx_raw, DATASOURCES:CREATE or ADMIN scope
+tbtail --dataset nginx_raw --parser nginx --file /var/log/nginx/access.log --nginx.conf /etc/nginx/nginx.conf --nginx.format combined --writekey $TB_WRITE_API_KEY
 ```
 
 You can also run the binary using a config file like [tbtail.conf](./tbtail.conf). This file contains a description for each available option.
