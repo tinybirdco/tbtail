@@ -31,6 +31,7 @@ cross-build-old:
 	CGO_LDFLAGS="$(CGO_LDFLAGS) -Xlinker --dynamic-linker="/path/to/another_glibc/lib64/ld-linux-x86-64.so.2"
 	build-all
 
+.PHONY: build-package
 build-package:
 	$(bash ./build-pkg.sh -v "${BUILD_NUMBER}" -t deb)
 	$(bash ./pkg-test/test.sh "${BUILD_NUMBER}")

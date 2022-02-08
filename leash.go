@@ -18,7 +18,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/honeycombio/dynsampler-go"
 	"github.com/honeycombio/urlshaper"
-	"github.com/ygnuss/libtb-go"
+	"github.com/tinybirdco/libtb-go"
 
 	"github.com/Altinity/clicktail/parsers/mysql"
 	"github.com/Altinity/clicktail/parsers/mysqlaudit"

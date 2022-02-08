@@ -11,7 +11,7 @@ import (
 
 	"github.com/Sirupsen/logrus"
 	flag "github.com/jessevdk/go-flags"
-	"github.com/ygnuss/libtb-go"
+	"github.com/tinybirdco/libtb-go"
 
 	"github.com/Altinity/clicktail/parsers/mysql"
 	"github.com/Altinity/clicktail/parsers/mysqlaudit"
@@ -46,23 +46,23 @@ var validParsers = []string{
 
 // GlobalOptions has all the top level CLI flags that clicktail supports
 type GlobalOptions struct {
-	APIHost    string `long:"api_host" description:"Host of the ClickHouse server" default:"http://localhost:8001/"`
+	APIHost    string `long:"api_host" description:"Host of the Tinybird server" default:"http://localhost:8001/"`
 	TailSample bool   `hidden:"true" description:"When true, sample while tailing. When false, sample post-parser events"`
 
-	ConfigFile string `short:"c" long:"config" description:"Config file for clicktail in INI format." no-ini:"true"`
+	ConfigFile string `short:"c" long:"config" description:"Config file for tbtail in INI format." no-ini:"true"`
 
 	SampleRate       uint `short:"r" long:"samplerate" description:"Only send 1 / N log lines" default:"1"`
-	NumSenders       uint `short:"P" long:"poolsize" description:"Number of concurrent connections to open to ClickHouse" default:"10"`
+	NumSenders       uint `short:"P" long:"poolsize" description:"Number of concurrent connections to open to Tinybird" default:"10"`
 	BatchFrequencyMs uint `long:"send_frequency_ms" description:"How frequently to flush batches" default:"10000"`
 	BatchSize        uint `long:"send_batch_size" description:"Maximum number of messages to put in a batch" default:"1000000"`
 	Debug            bool `long:"debug" description:"Print debugging output"`
 	StatusInterval   uint `long:"status_interval" description:"How frequently, in seconds, to print out summary info" default:"60"`
-	Backfill         bool `long:"backfill" description:"Configure clicktail to ingest old data in order to backfill ClickHouse table. Sets the correct values for --backoff, --tail.read_from, and --tail.stop"`
+	Backfill         bool `long:"backfill" description:"Configure tbtail to ingest old data in order to backfill Tinybird table. Sets the correct values for --backoff, --tail.read_from, and --tail.stop"`
 
 	Localtime         bool     `long:"localtime" description:"When parsing a timestamp that has no time zone, assume it is in the same timezone as localhost instead of UTC (the default)"`
 	Timezone          string   `long:"timezone" description:"When parsing a timestamp use this time zone instead of UTC (the default). Must be specified in TZ format as seen here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones"`
 	ScrubFields       []string `long:"scrub_field" description:"For the field listed, apply a one-way hash to the field content. May be specified multiple times"`
-	DropFields        []string `long:"drop_field" description:"Do not send the field to ClickHouse. May be specified multiple times"`
+	DropFields        []string `long:"drop_field" description:"Do not send the field to Tinybird. May be specified multiple times"`
 	AddFields         []string `long:"add_field" description:"Add the field to every event. Field should be key=val. May be specified multiple times"`
 	RequestShape      []string `long:"request_shape" description:"Identify a field that contains an HTTP request of the form 'METHOD /path HTTP/1.x' or just the request path. Break apart that field into subfields that contain components. May be specified multiple times. Defaults to 'request' when using the nginx parser"`
 	ShapePrefix       string   `long:"shape_prefix" description:"Prefix to use on fields generated from request_shape to prevent field collision"`
