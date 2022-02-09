@@ -44,7 +44,7 @@ var validParsers = []string{
 	"regex",
 }
 
-// GlobalOptions has all the top level CLI flags that clicktail supports
+// GlobalOptions has all the top level CLI flags that tbtail supports
 type GlobalOptions struct {
 	APIHost    string `long:"api_host" description:"Host of the Tinybird server" default:"http://localhost:8001/"`
 	TailSample bool   `hidden:"true" description:"When true, sample while tailing. When false, sample post-parser events"`
@@ -76,7 +76,7 @@ type GlobalOptions struct {
 	GoalSampleRate    int      `hidden:"true" description:"used to hold the desired sample rate and set tailing sample rate to 1"`
 	MinSampleRate     int      `long:"dynsample_minimum" description:"if the rate of traffic falls below this, dynsampler won't sample" default:"1"`
 
-	Hfi bool `long:"hfi" description:"Use High Frecuency Ingestion to ingest the data" default:"false"`
+	Hfi bool `long:"hfi" description:"Use High Frecuency Ingestion to ingest the data"`
 
 	Reqs  RequiredOptions `group:"Required Options"`
 	Modes OtherModes      `group:"Other Modes"`
