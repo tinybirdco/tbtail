@@ -76,6 +76,8 @@ type GlobalOptions struct {
 	GoalSampleRate    int      `hidden:"true" description:"used to hold the desired sample rate and set tailing sample rate to 1"`
 	MinSampleRate     int      `long:"dynsample_minimum" description:"if the rate of traffic falls below this, dynsampler won't sample" default:"1"`
 
+	Hfi bool `long:"hfi" description:"Use High Frecuency Ingestion to ingest the data" default:"false"`
+
 	Reqs  RequiredOptions `group:"Required Options"`
 	Modes OtherModes      `group:"Other Modes"`
 

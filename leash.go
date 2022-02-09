@@ -49,6 +49,7 @@ func run(options GlobalOptions) {
 		WriteKey:             options.Reqs.WriteKey,
 		Dataset:              options.Reqs.Dataset,
 		APIHost:              options.APIHost,
+		Hfi:                  options.Hfi,
 		MaxConcurrentBatches: options.NumSenders,
 		SendFrequency:        time.Duration(options.BatchFrequencyMs) * time.Millisecond,
 		MaxBatchSize:         options.BatchSize,
