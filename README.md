@@ -32,8 +32,10 @@ There are three installation options for `tbtail`:
 
 First of all, remember you should set your GOPATH var pointing to your go project folder.
 
+Use go 1.14. It is not compatible with higher versions.
+
 ```
-go get https://github.com/tinybirdco/tbtail
+go get github.com/tinybirdco/tbtail
 ```
 
 ```
@@ -46,7 +48,7 @@ The binary will be installed into your bin folder `$GOPATH/bin/tbtail`
 If you need to change anything highly probably you will need our `tblib-go` tool too.
 
 ```
-go get https://github.com/tinybirdco/libtb-go
+go get github.com/tinybirdco/libtb-go
 ```
 
 ```
