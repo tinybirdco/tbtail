@@ -48,7 +48,7 @@ The binary will be installed into your bin folder `$GOPATH/bin/tbtail`
 If you need to change anything highly probably you will need our `tblib-go` tool too.
 
 ```
-go get https://github.com/tinybirdco/libtb-go
+go get github.com/tinybirdco/libtb-go
 ```
 
 ```
