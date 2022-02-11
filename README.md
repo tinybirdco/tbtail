@@ -72,6 +72,8 @@ Everytime you create a new version remeber you need to bump the version in [vers
 
 Add all the changes to the [changelog](changelog.md) including the link to the binary file with the changes.
 
+Do not forget to tag the code with the released version.
+
 ### Install from deb package
 
 Download our latest package from [here](changelog.md).
