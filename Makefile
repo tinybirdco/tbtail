@@ -12,7 +12,8 @@ build-deps:
 
 build:
 	mkdir -p bin
-	go build -o bin/$(BINARY_NAME) -ldflags "-X main.BuildID=${BUILD_NUMBER}" .
+	GOARCH=amd64 GOOS=linux go build -o bin/$(BINARY_NAME)_${BUILD_NUMBER}_linux_amd64 -ldflags "-X main.BuildID=${BUILD_NUMBER}" .
+
 
 install: 
 	go install -ldflags "-X main.BuildID=${BUILD_NUMBER}" 

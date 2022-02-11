@@ -66,6 +66,14 @@ You can also use our [`Makefile`](./Makefile) to build, clean, install, and pack
 
 Remember that, in all cases, you need `GOPATH` to point to your root workspace.
 
+### Releasing a new version
+
+Everytime you create a new version remeber you need to bump the version in [version.txt](version.txt). It is important because the binary file, and the package file will contain the version you have generated.
+
+Add all the changes to the [changelog](changelog.md) including the link to the binary file with the changes.
+
+Do not forget to tag the code with the released version.
+
 ### Install from deb package
 
 Download our latest package from [here](changelog.md).
@@ -118,3 +126,8 @@ sudo systemctl stop tbtail
 sudo systemctl restart tbtail
 systemctl status tbtail
 ```
+
+## Development
+
+Make sure you have go 1.14. It is not compatible with higher versions.
+
