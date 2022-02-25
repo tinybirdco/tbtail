@@ -38,11 +38,21 @@ It is important to have in mind the HFI endpoint is intended to send events with
 - Use low values in `send_frequency_ms`. Expected values will be around 500 - 1500 ms.
 - Use low values in `send_bathc_size`. The HFI endopoint is not intended to be used with high data sizes so use a small number of events. In general, num_events * size_event < 
 
+### Fixes
+- Added support for [HFI](https://docs.tinybird.co/api-reference/datasource-api.html#post-v0-events-title).
+
+
+## [1.1.0] (2022-02-17)
+
+Added a new binary file for macOS (x86_64).
+
 ### Downloads
 
 * [deb package](https://storage.googleapis.com/tbtail-releases/tbtail_1.1.0_amd64.deb)
 
-* [binary file](https://storage.googleapis.com/tbtail-releases/tbtail_1.1.0_linux_amd64)
+* [binary file Linux](https://storage.googleapis.com/tbtail-releases/tbtail_1.1.0_linux_amd64)
+
+* [binary file macOS](https://storage.googleapis.com/tbtail-releases/tbtail_1.1.0_macos_amd64)
 
 ### Fixes
-- Added support for [HFI](https://docs.tinybird.co/api-reference/datasource-api.html#post-v0-events-title).
+- N/A
