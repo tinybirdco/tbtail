@@ -14,11 +14,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/hpcloud/tail"
-	"golang.org/x/sys/unix"
 )
 
 type RotateStyle int
@@ -282,8 +282,8 @@ func getStartLocation(stateFile string, logfile string) *tail.SeekInfo {
 		return end
 	}
 	// get the details of the existing log file
-	logStat := unix.Stat_t{}
-	if err := unix.Stat(logfile, &logStat); err != nil {
+	var logStat syscall.Stat_t
+	if err := syscall.Stat(logfile, &logStat); err != nil {
 		logrus.WithFields(logrus.Fields{
 			"starting at": "end", "error": err,
 		}).Debug("getStartLocation failed to get unix.stat() on the logfile")
@@ -388,8 +388,11 @@ func getStateFile(conf Config, filename string, numFiles int) string {
 // updateStateFile updates the state file once per second with the current
 // values for the logfile's inode number and offset
 func updateStateFile(state *State, t *tail.Tail, file string, stateFh *os.File) {
-	logStat := unix.Stat_t{}
-	unix.Stat(file, &logStat)
+	var logStat syscall.Stat_t
+	if err := syscall.Stat(file, &logStat); err != nil {
+		panic(err)
+	}
+
 	currentPos, err := t.Tell()
 	if err != nil {
 		return

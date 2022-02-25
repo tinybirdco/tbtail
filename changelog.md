@@ -56,3 +56,21 @@ Added a new binary file for macOS (x86_64).
 
 ### Fixes
 - N/A
+
+
+## [1.2.0] (2022-02-25)
+
+Added support for Windows OS. 
+
+### Downloads
+
+* [deb package](https://storage.googleapis.com/tbtail-releases/tbtail_1.2.0_amd64.deb)
+
+* [binary file Linux](https://storage.googleapis.com/tbtail-releases/tbtail_1.2.0_linux_amd64)
+
+* [binary file macOS](https://storage.googleapis.com/tbtail-releases/tbtail_1.2.0_macos_amd64)
+
+* [binary file Windows](https://storage.googleapis.com/tbtail-releases/tbtail_1.2.0_windows_amd64.exe)
+
+### Fixes
+- Changed the way of getting inode the log file, now is used package [syscall](https://pkg.go.dev/syscall) instead of [unix](https://pkg.go.dev/golang.org/x/sys/unix).
