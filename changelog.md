@@ -44,7 +44,7 @@ It is important to have in mind the HFI endpoint is intended to send events with
 
 ## [1.1.0] (2022-02-17)
 
-Added a new binary file for macOS (x86_64).
+Added a new binary file for macOS (x86_64) and Windows (x86_64).
 
 ### Downloads
 
@@ -53,6 +53,8 @@ Added a new binary file for macOS (x86_64).
 * [binary file Linux](https://storage.googleapis.com/tbtail-releases/tbtail_1.1.0_linux_amd64)
 
 * [binary file macOS](https://storage.googleapis.com/tbtail-releases/tbtail_1.1.0_macos_amd64)
+
+* [binary file Windows](https://storage.googleapis.com/tbtail-releases/tbtail_1.1.0_windows_amd64.exe)
 
 ### Fixes
 - N/A
