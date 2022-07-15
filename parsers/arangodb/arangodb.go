@@ -8,10 +8,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/honeycombio/honeytail/event"
 	"github.com/honeycombio/honeytail/httime"
 	"github.com/honeycombio/honeytail/parsers"
+	"github.com/sirupsen/logrus"
 )
 
 const numParsers = 20

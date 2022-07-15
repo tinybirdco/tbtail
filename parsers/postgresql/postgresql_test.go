@@ -32,10 +32,10 @@ func TestSingleQueryParsing(t *testing.T) {
 			expected: event.Event{
 				Timestamp: time.Date(2017, 11, 7, 23, 5, 16, 0, time.UTC),
 				Data: map[string]interface{}{
-					"user":     "postgres",
-					"database": "postgres",
-					"duration": 0.681,
-					"pid":      3053,
+					"user":                "postgres",
+					"database":            "postgres",
+					"duration":            0.681,
+					"pid":                 3053,
 					"session_line_number": 3,
 					"query":               "SELECT d.datname as \"Name\", pg_catalog.pg_get_userbyid(d.datdba) as \"Owner\", pg_catalog.pg_encoding_to_char(d.encoding) as \"Encoding\", d.datcollate as \"Collate\", d.datctype as \"Ctype\", pg_catalog.array_to_string(d.datacl, E'\\n') AS \"Access privileges\" FROM pg_catalog.pg_database d ORDER BY 1;",
 					"normalized_query":    "select d.datname as ?, pg_catalog.pg_get_userbyid(d.datdba) as ?, pg_catalog.pg_encoding_to_char(d.encoding) as ?, d.datcollate as ?, d.datctype as ?, pg_catalog.array_to_string(d.datacl, e?) as ? from pg_catalog.pg_database d order by ?;",
@@ -49,10 +49,10 @@ func TestSingleQueryParsing(t *testing.T) {
 			expected: event.Event{
 				Timestamp: time.Date(2017, 11, 8, 3, 2, 49, 314000000, time.UTC),
 				Data: map[string]interface{}{
-					"user":     "postgres",
-					"database": "test",
-					"duration": 2.753,
-					"pid":      8544,
+					"user":                   "postgres",
+					"database":               "test",
+					"duration":               2.753,
+					"pid":                    8544,
 					"session_line_number":    1,
 					"virtual_transaction_id": "3/0",
 					"transaction_id":         "0",
@@ -71,10 +71,10 @@ func TestSingleQueryParsing(t *testing.T) {
 			expected: event.Event{
 				Timestamp: time.Date(2017, 11, 9, 20, 15, 41, 402000000, time.UTC),
 				Data: map[string]interface{}{
-					"user":     "postgres",
-					"database": "test",
-					"duration": 2.753,
-					"pid":      8544,
+					"user":                "postgres",
+					"database":            "test",
+					"duration":            2.753,
+					"pid":                 8544,
 					"session_line_number": 1,
 					"query":               "select * from test;",
 					"normalized_query":    "select * from test;",
@@ -88,10 +88,10 @@ func TestSingleQueryParsing(t *testing.T) {
 			expected: event.Event{
 				Timestamp: time.Date(2017, 11, 7, 23, 5, 16, 0, time.UTC),
 				Data: map[string]interface{}{
-					"user":     "postgres",
-					"database": "postgres",
-					"duration": 0.681,
-					"pid":      3053,
+					"user":                "postgres",
+					"database":            "postgres",
+					"duration":            0.681,
+					"pid":                 3053,
 					"session_line_number": 3,
 					"query":               "SELECT c FROM sbtest1 WHERE id=$1",
 					"normalized_query":    "select c from sbtest1 where id=$?",
@@ -131,10 +131,10 @@ func TestMultipleQueryParsing(t *testing.T) {
 		event.Event{
 			Timestamp: time.Date(2017, 11, 7, 1, 43, 18, 0, time.UTC),
 			Data: map[string]interface{}{
-				"user":     "postgres",
-				"database": "test",
-				"duration": 9.263,
-				"pid":      3542,
+				"user":                "postgres",
+				"database":            "test",
+				"duration":            9.263,
+				"pid":                 3542,
 				"session_line_number": 5,
 				"query":               "INSERT INTO test (id, name, value) VALUES (1, 'Alice', 'foo');",
 				"normalized_query":    "insert into test (id, name, value) values (?, ?, ?);",
@@ -143,10 +143,10 @@ func TestMultipleQueryParsing(t *testing.T) {
 		event.Event{
 			Timestamp: time.Date(2017, 11, 7, 1, 43, 27, 0, time.UTC),
 			Data: map[string]interface{}{
-				"user":     "postgres",
-				"database": "test",
-				"duration": 0.841,
-				"pid":      3542,
+				"user":                "postgres",
+				"database":            "test",
+				"duration":            0.841,
+				"pid":                 3542,
 				"session_line_number": 6,
 				"query":               "INSERT INTO test (id, name, value) VALUES (2, 'Bob', 'bar');",
 				"normalized_query":    "insert into test (id, name, value) values (?, ?, ?);",
@@ -155,10 +155,10 @@ func TestMultipleQueryParsing(t *testing.T) {
 		event.Event{
 			Timestamp: time.Date(2017, 11, 7, 1, 43, 39, 0, time.UTC),
 			Data: map[string]interface{}{
-				"user":     "postgres",
-				"database": "test",
-				"duration": 15.577,
-				"pid":      3542,
+				"user":                "postgres",
+				"database":            "test",
+				"duration":            15.577,
+				"pid":                 3542,
 				"session_line_number": 7,
 				"query":               "SELECT * FROM test WHERE id=1;",
 				"normalized_query":    "select * from test where id=?;",
@@ -167,10 +167,10 @@ func TestMultipleQueryParsing(t *testing.T) {
 		event.Event{
 			Timestamp: time.Date(2017, 11, 7, 1, 43, 42, 0, time.UTC),
 			Data: map[string]interface{}{
-				"user":     "postgres",
-				"database": "test",
-				"duration": 0.501,
-				"pid":      3542,
+				"user":                "postgres",
+				"database":            "test",
+				"duration":            0.501,
+				"pid":                 3542,
 				"session_line_number": 8,
 				"query":               "SELECT * FROM test WHERE id=2;",
 				"normalized_query":    "select * from test where id=?;",

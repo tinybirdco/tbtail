@@ -14,6 +14,8 @@ build:
 	mkdir -p bin
 	GOARCH=amd64 GOOS=linux go build -o bin/$(BINARY_NAME)_${BUILD_NUMBER}_linux_amd64 -ldflags "-X main.BuildID=${BUILD_NUMBER}" .
 	GOARCH=amd64 GOOS=darwin go build -o bin/$(BINARY_NAME)_${BUILD_NUMBER}_macos_amd64 -ldflags "-X main.BuildID=${BUILD_NUMBER}" .
+	chmod a+x bin/$(BINARY_NAME)_${BUILD_NUMBER}_linux_amd64
+	chmod a+x bin/$(BINARY_NAME)_${BUILD_NUMBER}_macos_amd64
 
 
 install: 

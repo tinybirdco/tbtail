@@ -7,8 +7,8 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/kr/logfmt"
+	"github.com/sirupsen/logrus"
 
 	"github.com/honeycombio/honeytail/event"
 	"github.com/honeycombio/honeytail/httime"

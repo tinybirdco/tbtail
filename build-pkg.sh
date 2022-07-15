@@ -25,11 +25,12 @@ fi
 
 fpm -s dir -n tbtail \
     -m "Support <support@tinybird.co>" \
-    -p $GOPATH/bin \
+    -p $PWD \
     -v $version \
     -t $pkg_type \
-    --pre-install=./preinstall \
-    $GOPATH/bin/tbtail=/usr/local/bin/tbtail \
+    --before-install=./preinstall \
+    --after-install=./postinstall \
+    $PWD/bin/tbtail_1.1.0_linux_amd64=/usr/local/bin/tbtail \
     ./tbtail.upstart=/etc/init/tbtail.conf \
     ./tbtail.service=/lib/systemd/system/tbtail.service \
     ./tbtail.conf=/etc/tbtail/tbtail.conf

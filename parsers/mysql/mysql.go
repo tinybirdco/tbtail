@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/honeycombio/mysqltools/query/normalizer"
+	"github.com/sirupsen/logrus"
 
 	"github.com/honeycombio/honeytail/event"
 	"github.com/honeycombio/honeytail/httime"
@@ -72,11 +72,11 @@ const (
 	tablesKey          = "tables"
 	commentsKey        = "comments"
 
-	schemaKey          = "schema"
-	errorNoKey         = "error_num"
-	killedKey          = "killed"
-	slRateTypeKey      = "sl_rate_type"
-	slRateLimitKey     = "sl_rate_limit"
+	schemaKey      = "schema"
+	errorNoKey     = "error_num"
+	killedKey      = "killed"
+	slRateTypeKey  = "sl_rate_type"
+	slRateLimitKey = "sl_rate_limit"
 
 	// InnoDB keys (it seems)
 	bytesSentKey      = "bytes_sent"
@@ -112,7 +112,7 @@ var (
 	reAdminPing   = parsers.ExtRegexp{regexp.MustCompile("^# administrator command: Ping; *$")}
 	reUser        = parsers.ExtRegexp{regexp.MustCompile("^# User@Host: (?P<user>[^#]+) @ (?P<host>[^#]+?)( Id:(?P<connection>.+))?$")}
 	reSchemaError = parsers.ExtRegexp{regexp.MustCompile("^# Schema: (?P<schema>[^#]+) Last_errno: (?P<errorNo>[0-9]+)(  Killed: (?P<killed>[0-9]+))?$")}
-	reQueryStats = parsers.ExtRegexp{regexp.MustCompile("^# Query_time: (?P<queryTime>[0-9.]+) *Lock_time: (?P<lockTime>[0-9.]+) *Rows_sent: (?P<rowsSent>[0-9]+) *Rows_examined: (?P<rowsExamined>[0-9]+)( *Rows_affected: (?P<rowsAffected>[0-9]+))?.*$")}
+	reQueryStats  = parsers.ExtRegexp{regexp.MustCompile("^# Query_time: (?P<queryTime>[0-9.]+) *Lock_time: (?P<lockTime>[0-9.]+) *Rows_sent: (?P<rowsSent>[0-9]+) *Rows_examined: (?P<rowsExamined>[0-9]+)( *Rows_affected: (?P<rowsAffected>[0-9]+))?.*$")}
 	// when capturing the log from the wire, you don't get lock time etc., only query time
 	reTCPQueryStats    = parsers.ExtRegexp{regexp.MustCompile("^# Query_time: (?P<queryTime>[0-9.]+).*$")}
 	reServStats        = parsers.ExtRegexp{regexp.MustCompile("^# Bytes_sent: (?P<bytesSent>[0-9.]+) *Tmp_tables: (?P<tmpTables>[0-9.]+) *Tmp_disk_tables: (?P<tmpDiskTables>[0-9]+) *Tmp_table_sizes: (?P<tmpTableSizes>[0-9]+).*$")}
@@ -125,7 +125,7 @@ var (
 	reSetTime          = parsers.ExtRegexp{regexp.MustCompile("^SET timestamp=(?P<unixTime>[0-9]+);$")}
 	reUse              = parsers.ExtRegexp{regexp.MustCompile("^(?i)use ")}
 
-	reSlowLogRates     = parsers.ExtRegexp{regexp.MustCompile("^# Log_slow_rate_type: (?P<sl_rate_type>[^#]+)  Log_slow_rate_limit: (?P<sl_rate_limit>[0-9]+)$")}
+	reSlowLogRates = parsers.ExtRegexp{regexp.MustCompile("^# Log_slow_rate_type: (?P<sl_rate_type>[^#]+)  Log_slow_rate_limit: (?P<sl_rate_limit>[0-9]+)$")}
 
 	// if 'flush logs' is run at the mysql prompt (which rds commonly does, apparently) the following shows up in slow query log:
 	//   /usr/local/Cellar/mysql/5.7.12/bin/mysqld, Version: 5.7.12 (Homebrew). started with:
@@ -170,12 +170,12 @@ func (p *Parser) Init(options interface{}) error {
 	p.conf = *options.(*Options)
 	if p.conf.Host != "" {
 
-        var url string
-	    if strings.HasPrefix(p.conf.Host, "@") {
-		    url = fmt.Sprintf("%s:%s%s/", p.conf.User, p.conf.Pass, p.conf.Host)
-	    } else {
-	        url = fmt.Sprintf("%s:%s@tcp(%s)/", p.conf.User, p.conf.Pass, p.conf.Host)
-	    }
+		var url string
+		if strings.HasPrefix(p.conf.Host, "@") {
+			url = fmt.Sprintf("%s:%s%s/", p.conf.User, p.conf.Pass, p.conf.Host)
+		} else {
+			url = fmt.Sprintf("%s:%s@tcp(%s)/", p.conf.User, p.conf.Pass, p.conf.Host)
+		}
 		db, err := sql.Open("mysql", url)
 		if err != nil {
 			logrus.Fatal(err)
@@ -238,7 +238,7 @@ func getReadOnly(db *sql.DB) (*bool, error) {
 }
 
 func getHostedOn(db *sql.DB) (string, error) {
-	rows, err := db.Query("SHOW VARIABLES WHERE Variable_name = 'hostname'");
+	rows, err := db.Query("SHOW VARIABLES WHERE Variable_name = 'hostname'")
 	if err != nil {
 		return "", err
 	}
@@ -251,7 +251,7 @@ func getHostedOn(db *sql.DB) (string, error) {
 			return "", err
 		}
 
-		return value, nil;
+		return value, nil
 		/*if strings.HasPrefix(value, "/rdsdbbin/") {
 			return rdsStr, nil
 		}*/
@@ -453,17 +453,17 @@ func (p *Parser) handleEvent(ptp *perThreadParser, rawE []string) (
 			sq[userKey] = strings.Split(mg["user"], "[")[0]
 			sq[clientKey] = strings.TrimSpace(mg["host"])
 
-            if connectionVal, ok := mg["connection"]; ok {
-                sq[connectionIdKey] = strings.TrimSpace(connectionVal)
-            }
+			if connectionVal, ok := mg["connection"]; ok {
+				sq[connectionIdKey] = strings.TrimSpace(connectionVal)
+			}
 		} else if _, mg := reSchemaError.FindStringSubmatchMap(line); mg != nil {
-            sq[schemaKey] = strings.TrimSpace(mg["schema"])
-            sq[errorNoKey] = strings.TrimSpace(mg["errorNo"])
+			sq[schemaKey] = strings.TrimSpace(mg["schema"])
+			sq[errorNoKey] = strings.TrimSpace(mg["errorNo"])
 
-            if killedVal, ok := mg["killed"]; ok {
-                sq[killedKey] = strings.TrimSpace(killedVal)
-            }
-        } else if _, mg := reQueryStats.FindStringSubmatchMap(line); mg != nil {
+			if killedVal, ok := mg["killed"]; ok {
+				sq[killedKey] = strings.TrimSpace(killedVal)
+			}
+		} else if _, mg := reQueryStats.FindStringSubmatchMap(line); mg != nil {
 			query = ""
 			if queryTime, err := strconv.ParseFloat(mg["queryTime"], 64); err == nil {
 				sq[queryTimeKey] = queryTime
@@ -535,8 +535,8 @@ func (p *Parser) handleEvent(ptp *perThreadParser, rawE []string) (
 		} else if _, mg := reInnodbTrx.FindStringSubmatchMap(line); mg != nil {
 			sq[transactionIDKey] = mg["trxId"]
 		} else if _, mg := reSlowLogRates.FindStringSubmatchMap(line); mg != nil {
-        	sq[slRateTypeKey] = mg["sl_rate_type"]
-        	sq[slRateLimitKey] = mg["sl_rate_limit"]
+			sq[slRateTypeKey] = mg["sl_rate_type"]
+			sq[slRateLimitKey] = mg["sl_rate_limit"]
 		} else if match := reUse.FindString(line); match != "" {
 			query = ""
 			db := strings.TrimPrefix(line, match)
