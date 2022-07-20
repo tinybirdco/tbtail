@@ -1,5 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
-systemctl daemon-reload
-service tbtail restart
+if ! command -v initctl --version &> /dev/null
+then
+    systemctl daemon-reload
+    service tbtail restart
+else
+    initctl restart tbtail
+fi
