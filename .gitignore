@@ -5,3 +5,4 @@ honeytail
 bin
 schema/tinybird/.tinyb*
 pkg-test/tbtail*
+.vagrant

@@ -29,7 +29,7 @@ fpm -s dir -n tbtail \
     -v $version \
     -t $pkg_type \
     --before-install=./preinstall \
-    --after-install=./postinstall \
+    --post-install=./postinstall \
     $PWD/bin/tbtail_1.1.0_linux_amd64=/usr/local/bin/tbtail \
     ./tbtail.upstart=/etc/init/tbtail.conf \
     ./tbtail.service=/lib/systemd/system/tbtail.service \

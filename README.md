@@ -32,7 +32,7 @@ There are three installation options for `tbtail`:
 
 First of all, remember you should set your GOPATH var pointing to your go project folder.
 
-Use go 1.14. It is not compatible with higher versions.
+**Use go 1.14. It is not compatible with higher versions.**
 
 ```
 go get github.com/tinybirdco/tbtail
@@ -131,3 +131,14 @@ systemctl status tbtail
 
 Make sure you have go 1.14. It is not compatible with higher versions.
 
+## How to create a RPM/deb package
+
+1. Once we have clone tbtail and we have go 1.14
+2. You will have installed ruby. You can do that using `sudo apt-get install ruby ruby-dev rubygems build-essential`
+3. Then, you would need to install fpm gem. `gem install fpm`
+4. For creating a rpm, you need to install `sudo apt-get install rpm`
+5. Finally, you would need to run the `build-pkg.sh`
+
+For rpm, you would run `./build-pkg.sh -v <VERSION> -t rpm` and for deb `./build-pkg.sh -v <VERSION> -t deb`
+
+The package will include the default configuration in the package, so if you need to use a different one. You will need to modify the current one.
