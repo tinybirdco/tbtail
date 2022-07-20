@@ -57,10 +57,10 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/honeycombio/honeytail/event"
 	"github.com/honeycombio/honeytail/parsers"
 	"github.com/honeycombio/mysqltools/query/normalizer"
+	"github.com/sirupsen/logrus"
 )
 
 const (

@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Sirupsen/logrus"
 	"github.com/honeycombio/mongodbtools/logparser"
 	queryshape "github.com/honeycombio/mongodbtools/queryshape"
+	"github.com/sirupsen/logrus"
 
 	"github.com/honeycombio/honeytail/event"
 	"github.com/honeycombio/honeytail/httime"

@@ -9,9 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Sirupsen/logrus"
-	flag "github.com/jessevdk/go-flags"
 	"github.com/tinybirdco/libtb-go"
+
+	flag "github.com/jessevdk/go-flags"
+	"github.com/sirupsen/logrus"
 
 	"github.com/Altinity/clicktail/parsers/mysql"
 	"github.com/Altinity/clicktail/parsers/mysqlaudit"

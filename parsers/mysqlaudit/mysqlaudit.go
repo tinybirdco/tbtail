@@ -2,14 +2,13 @@
 package mysqlaudit
 
 import (
+	"encoding/json"
 	"regexp"
 	"strings"
 	"sync"
-	"encoding/json"
 	"time"
 
-
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 
 	"github.com/honeycombio/honeytail/event"
 	"github.com/honeycombio/honeytail/httime"
@@ -56,13 +55,13 @@ type AuditLineParser struct {
 func (j *AuditLineParser) ParseLine(line string) (map[string]interface{}, error) {
 	parsed := make(map[string]interface{})
 	var err error
-    var data map[string]interface{}
+	var data map[string]interface{}
 
-    if err := json.Unmarshal([]byte(line), &data); err != nil {
-        logrus.Debug("boom")
-    } else {
-        parsed = data["audit_record"].(map[string]interface{})
-    }
+	if err := json.Unmarshal([]byte(line), &data); err != nil {
+		logrus.Debug("boom")
+	} else {
+		parsed = data["audit_record"].(map[string]interface{})
+	}
 
 	return parsed, err
 }
@@ -175,20 +174,20 @@ func allEmpty(pl map[string]interface{}) bool {
 // tries to extract a timestamp from the log line
 func (n *Parser) getTimestamp(evMap map[string]interface{}) time.Time {
 
-    /*_, mg := reTime.FindStringSubmatchMap(evMap["record"].(string))
+	/*_, mg := reTime.FindStringSubmatchMap(evMap["record"].(string))
 
-    if mg == nil {
-        return httime.Now()
-    }
+	    if mg == nil {
+	        return httime.Now()
+	    }
 
-    logrus.Debug("xxx")
-    logrus.Debug(mg["ts"])
+	    logrus.Debug("xxx")
+	    logrus.Debug(mg["ts"])
 
-	timestamp, _ := httime.Parse("2006-01-02T15:04:05", mg["ts"])*/
+		timestamp, _ := httime.Parse("2006-01-02T15:04:05", mg["ts"])*/
 
 	timestamp, _ := httime.Parse("2006-01-02T15:04:05 MST", evMap["timestamp"].(string))
 
-    logrus.Debug(timestamp.Format(time.RFC3339))
+	logrus.Debug(timestamp.Format(time.RFC3339))
 
 	return timestamp
 }

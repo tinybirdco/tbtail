@@ -15,10 +15,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/tinybirdco/libtb-go"
+
 	"github.com/honeycombio/dynsampler-go"
 	"github.com/honeycombio/urlshaper"
-	"github.com/tinybirdco/libtb-go"
+	"github.com/sirupsen/logrus"
 
 	"github.com/Altinity/clicktail/parsers/mysql"
 	"github.com/Altinity/clicktail/parsers/mysqlaudit"
