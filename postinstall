@@ -4,6 +4,7 @@ set -e
 if ! command -v initctl --version &> /dev/null
 then
     systemctl daemon-reload
+    systemctl enable tbtail
     service tbtail restart
 else
     initctl restart tbtail

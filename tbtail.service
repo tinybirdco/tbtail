@@ -4,6 +4,8 @@ After=network.target
 
 [Service]
 ExecStart=/usr/local/bin/tbtail -c /etc/tbtail/tbtail.conf
+StandardOutput=file:/var/log/tbtail.log
+StandardError=file:/var/log/tbtail.log
 KillMode=process
 Restart=always
 RestartSec=5s
